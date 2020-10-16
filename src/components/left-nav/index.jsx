@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, withRouter} from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import './index.less'
 import logo from '../../assets/images/logo.png'
 import { Menu } from 'antd';
@@ -7,8 +7,8 @@ import menuList from '../../config/menuConfig.js'
 const { SubMenu } = Menu;
 
 class LeftNav extends Component {
-    componentWillMount(){
-        this.menuNodes=this.getMenuNodes(menuList)
+    componentWillMount() {
+        this.menuNodes = this.getMenuNodes(menuList)
     }
     getMenuNodes = (menuList) => {
         return menuList.map(item => {
@@ -22,10 +22,10 @@ class LeftNav extends Component {
                 )
             }
             else {
-                const path=this.props.location.pathname
-                const cItem=item.children.find(cItem=>cItem.key===path)
-                if(cItem){
-                    this.openKey=item.key
+                const path = this.props.location.pathname
+                const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0)
+                if (cItem) {
+                    this.openKey = item.key
                 }
                 return (
                     <SubMenu key={item.key} icon={item.icon} title={item.title}>
@@ -36,8 +36,12 @@ class LeftNav extends Component {
         })
     }
     render() {
-        const path=this.props.location.pathname
-        const openKey=this.openKey
+        let path = this.props.location.pathname
+        if(path.indexOf('/product')===0) { // 当前请求的是商品或其子路由界面
+            path = '/product'
+          }
+
+        const openKey = this.openKey
         return (
             <div className='left-nav'>
                 <Link to='/' className='left-nav-header'>
